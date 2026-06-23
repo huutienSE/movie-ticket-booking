@@ -25,10 +25,13 @@ if (!isset($theaters)) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     
     <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/global.css">
     <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/header.css">
-    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/footer.css"> </head>
+    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/footer.css"> 
+    <link rel="stylesheet" href="/MOVIE-TICKET-BOOKING/public/assets/css/home.css">
+</head>
 <body>
     <header class="main-header">
         <div class="container">
