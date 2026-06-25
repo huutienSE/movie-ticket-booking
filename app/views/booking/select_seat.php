@@ -66,31 +66,21 @@ $showtime = isset($showtimes[$showtime_id]) ? $showtimes[$showtime_id] : $showti
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chọn Ghế Ngồi - <?php echo htmlspecialchars($movie['name']); ?></title>
-    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/booking.css">
+   <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/seat.css">
 </head>
 
 <body>
 
 <div class="seat-page">
-
     <div class="seat-container">
 
         <!-- BREADCRUMB -->
         <div class="breadcrumb">
-            <div class="step">
-                1. Chọn Suất Chiếu
-            </div>
-            <div class="step active-step">
-                2. Chọn Ghế
-            </div>
-            <div class="step">
-                3. Xác Nhận
-            </div>
-            <div class="step">
-                4. Thanh Toán
-            </div>
+            <div class="step">1. Chọn Suất Chiếu</div>
+            <div class="step active-step">2. Chọn Ghế</div>
+            <div class="step">3. Xác Nhận</div>
+            <div class="step">4. Thanh Toán</div>
         </div>
-
         <!-- HEADER -->
         <div class="seat-header">
             <h1>Chọn Ghế Ngồi</h1>
@@ -98,29 +88,28 @@ $showtime = isset($showtimes[$showtime_id]) ? $showtimes[$showtime_id] : $showti
         </div>
 
         <!-- SCREEN -->
-        <div class="screen">
-            🎬 MÀN HÌNH 🎬
-        </div>
+        <div class="screen">🎬 MÀN HÌNH 🎬</div>
 
         <!-- LEGEND -->
         <div class="seat-legend">
-            <div class="legend-item legend-available">
-                <div class="legend-box"></div>
+            <div class="legend-item">
+                <div class="legend-box available"></div>
                 <span>Ghế Trống</span>
             </div>
-            <div class="legend-item legend-selected">
-                <div class="legend-box"></div>
+            <div class="legend-item">
+                <div class="legend-box selected"></div>
                 <span>Ghế Được Chọn</span>
             </div>
-            <div class="legend-item legend-unavailable">
-                <div class="legend-box"></div>
+
+            <div class="legend-item">
+                <div class="legend-box unavailable"></div>
                 <span>Ghế Không Còn</span>
             </div>
+
         </div>
 
         <!-- SEAT MAP -->
         <div class="seat-map">
-
             <!-- Row A -->
             <button class="seat" data-seat="A1">A1</button>
             <button class="seat" data-seat="A2">A2</button>
@@ -192,7 +181,6 @@ $showtime = isset($showtimes[$showtime_id]) ? $showtimes[$showtime_id] : $showti
             <button class="seat" data-seat="F8">F8</button>
             <button class="seat" data-seat="F9">F9</button>
             <button class="seat" data-seat="F10">F10</button>
-
         </div>
 
         <!-- SELECTED SEATS INFO -->
@@ -205,14 +193,11 @@ $showtime = isset($showtimes[$showtime_id]) ? $showtimes[$showtime_id] : $showti
 
         <!-- CONFIRMATION SECTION -->
         <div class="confirmation-section">
-
             <h3>Tóm Tắt Đặt Vé</h3>
-
             <div class="confirmation-item">
                 <span>Phim</span>
                 <strong><?php echo htmlspecialchars($movie['name']); ?></strong>
             </div>
-
             <div class="confirmation-item">
                 <span>Suất Chiếu</span>
                 <strong><?php echo htmlspecialchars($showtime['time']); ?> - Phòng <?php echo $showtime['room']; ?> | 23/06/2026</strong>
@@ -222,7 +207,6 @@ $showtime = isset($showtimes[$showtime_id]) ? $showtimes[$showtime_id] : $showti
                 <span>Số Vé</span>
                 <strong id="seat-count">0</strong>
             </div>
-
             <div class="confirmation-item">
                 <span>Giá Vé (1 vé)</span>
                 <strong><?php echo number_format($showtime['price'], 0, '.', '.'); ?> VNĐ</strong>
@@ -234,27 +218,19 @@ $showtime = isset($showtimes[$showtime_id]) ? $showtimes[$showtime_id] : $showti
             </div>
 
         </div>
-
         <!-- ACTION BUTTONS -->
         <div class="action-group">
-
             <button class="btn-back" onclick="history.back()">
                 ← Quay Lại
             </button>
-
             <form action="confirm.php" method="POST" style="margin: 0;">
                 <input type="hidden" name="movie_id" value="<?php echo $movie_id; ?>">
                 <input type="hidden" name="showtime_id" value="<?php echo $showtime_id; ?>">
                 <input type="hidden" name="seat_ids" id="seat_ids">
-                <button type="submit" class="btn-submit" id="confirm-btn" disabled>
-                    Tiếp Tục Xác Nhận →
-                </button>
+                <button type="submit" class="btn-submit" id="confirm-btn" disabled>Tiếp Tục Xác Nhận →</button>
             </form>
-
         </div>
-
     </div>
-
 </div>
 
 <script>
@@ -265,7 +241,6 @@ const pricePerSeat = <?php echo $showtime['price']; ?>;
 document.querySelectorAll('.seat:not(.unavailable)').forEach(seatBtn => {
     seatBtn.addEventListener('click', function() {
         const seatNum = this.dataset.seat;
-        
         if (selectedSeats.has(seatNum)) {
             selectedSeats.delete(seatNum);
             this.classList.remove('selected');
@@ -273,7 +248,6 @@ document.querySelectorAll('.seat:not(.unavailable)').forEach(seatBtn => {
             selectedSeats.add(seatNum);
             this.classList.add('selected');
         }
-        
         updateSummary();
     });
 });
@@ -288,7 +262,6 @@ function updateSummary() {
     } else {
         seatsList.textContent = seatsArray.join(', ');
     }
-    
     // Update seat count and total price
     const seatCount = selectedSeats.size;
     const totalPrice = seatCount * pricePerSeat;
@@ -296,7 +269,6 @@ function updateSummary() {
     document.getElementById('seat-count').textContent = seatCount;
     document.getElementById('total-price').textContent = totalPrice.toLocaleString('vi-VN') + ' VNĐ';
     document.getElementById('seat_ids').value = seatsArray.join(',');
-    
     // Enable/disable confirm button
     const confirmBtn = document.getElementById('confirm-btn');
     confirmBtn.disabled = seatCount === 0;

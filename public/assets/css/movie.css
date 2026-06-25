@@ -1,0 +1,108 @@
+.movie-page{
+    width:100%;
+    min-height:100vh;
+    padding:30px;
+    background:linear-gradient(to right,#081224,#0b1730,#081224);/*chỉnh lại màu chỉnh lại background */
+}
+
+.page-title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.page-title h1{
+    color:white;
+    font-size:42px;
+    font-weight:500;
+}
+
+.movie-grid{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.movie-card{
+    width:300px;
+    background:#16253b;
+    border-radius:12px;
+    overflow:hidden;
+    position:relative;
+    transition:transform 0.3s, box-shadow 0.3s;
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+
+.movie-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 25px rgba(239,68,68,0.3);
+}
+
+.movie-card img{
+    width:100%;
+    height:600px;
+    object-fit:cover;
+}
+
+.movie-rating{
+    position:absolute;
+    top:10px;
+    right:10px;
+    color:#ffd700;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.movie-content{
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    height:220px;
+}
+
+.movie-content h3{
+    color:white;
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.movie-genre{
+    color:#facc15;
+    font-size:11px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.movie-duration{
+    color:#bfc9d8;
+    font-size:12px;
+    margin-top:8px;
+    margin-bottom:12px;
+}
+
+.movie-content p{
+    color:#c6d1e0;
+    font-size:50px;
+    line-height:1.5;
+    flex-grow:1;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:5;
+    -webkit-box-orient:vertical;
+}
+
+.btn-showtime{
+    display:block;
+    width:100%;
+    text-align:center;
+    background:#ef4444;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:6px;
+    margin-top:15px;
+}
+
+.btn-showtime:hover{
+    background:#d40000;
+}
