@@ -34,3 +34,25 @@ if (!function_exists('format_price')) {
         return number_format($price, 0, ',', '.') . ' VNĐ';
     }
 }
+
+if (!function_exists('set_flash')) {
+    // Lưu thông báo tạm thời vào session
+    function set_flash($key, $message)
+    {
+        $_SESSION['flash'][$key] = $message;
+    }
+}
+
+if (!function_exists('get_flash')) {
+    // Lấy thông báo tạm thời và xóa khỏi session
+    function get_flash($key)
+    {
+        if (isset($_SESSION['flash'][$key])) {
+            $message = $_SESSION['flash'][$key];
+            unset($_SESSION['flash'][$key]);
+            return $message;
+        }
+        return null;
+    }
+}
+
