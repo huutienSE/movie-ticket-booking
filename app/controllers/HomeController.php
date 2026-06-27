@@ -1,13 +1,21 @@
 <?php
 
-class HomeController
+require_once __DIR__ . '/BaseController.php';
+
+class HomeController extends BaseController
 {
     public function index()
     {
-        $view = __DIR__ . '/../views/home/index.php';
+        $data = [
+            'title' => 'Trang Chủ',
+            'theaters' => [
+                ['id' => 1, 'name' => 'Cinema Quốc Thanh (TP.HCM)'],
+                ['id' => 2, 'name' => 'Cinema Sinh Viên (TP.HCM)'],
+                ['id' => 3, 'name' => 'Cinema Đà Lạt (Lâm Đồng)'],
+                ['id' => 4, 'name' => 'Cinema Lâm Đồng (Đức Trọng)'],
+            ]
+        ];
 
-        require_once __DIR__ . '/../views/layouts/header.php';
-        require_once $view;
-        require_once __DIR__ . '/../views/layouts/footer.php';
+        $this->view('home/index', $data);
     }
 }
