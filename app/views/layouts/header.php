@@ -76,9 +76,8 @@ if (!isset($theaters)) {
                     <?php endforeach; ?>
                 </div>
             </div>
-            <a href="/showtimes" class="nav-item">Lịch chiếu</a>
             <a href="/movies" class="nav-item">Phim</a>
-            <a href="/promotions" class="nav-item">Khuyến mãi</a>
+            <a href="/huong-dan-dat-ve" class="nav-item">Hướng dẫn đặt vé</a>
         </nav>
         </div>
     </header>
