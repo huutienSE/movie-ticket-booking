@@ -1,3 +1,4 @@
+
 <?php
 
 // Load the core App class
