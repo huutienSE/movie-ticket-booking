@@ -1,4 +1,4 @@
-<!-- http://localhost/MOVIE-TICKET-BOOKING/app/views/layouts/header.php -->
+<!-- http://localhost/movie-ticket-booking/app/views/layouts/header.php -->
 
 <?php
 // Mô phỏng session
@@ -30,7 +30,7 @@ if (!isset($theaters)) {
     <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/global.css">
     <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/header.css">
     <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/footer.css"> 
-    <link rel="stylesheet" href="/MOVIE-TICKET-BOOKING/public/assets/css/home.css">
+    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/home.css">
 </head>
 <body>
     <header class="main-header">
