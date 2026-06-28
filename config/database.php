@@ -5,6 +5,6 @@ return [
     'port' => env('DB_PORT', '3306'),
     'dbname' => env('DB_DATABASE', 'movie_ticket_booking'),
     'user' => env('DB_USERNAME', 'root'),
-    'password' => env('DB_PASSWORD', ''),
+    'password' => env('DB_PASSWORD', '1234'),
     'charset' => 'utf8mb4'
 ];
