@@ -1,12 +1,47 @@
-# 🎬 Movie Ticket Booking (Hybrid MVC Architecture)
+# Online Movie Ticket Booking System
 
-Dự án website đặt vé xem phim sử dụng kiến trúc **PHP thuần (Vanilla PHP) kết hợp mô hình Hybrid MVC**. Kiến trúc này giúp tách biệt rõ ràng giữa Database (Model), Logic xử lý (Service/Controller) và Giao diện (View), giúp các thành viên trong team làm việc nhóm dễ dàng và không bị conflict code.
+## Project Overview
+
+Online Movie Ticket Booking System là website hỗ trợ khách hàng tra cứu phim, xem lịch chiếu, chọn ghế và đặt vé xem phim trực tuyến.
+
+Hệ thống được phát triển theo kiến trúc PHP MVC kết hợp MySQL, bao gồm hai phân hệ chính:
+
+* User Site (Khách hàng)
+* Admin Site (Quản trị hệ thống)
 
 ---
 
-## 🚀 1. Hướng Dẫn Cài Đặt và Chạy Dự Án
+# Technology Stack
 
-### Bước 1.1: Tải Code (Clone)
+## Backend
+
+* PHP 8.x
+* MVC Architecture
+* Session-based Authentication
+
+## Database
+
+* MySQL 8.x
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
+## Development Tools
+
+* Laragon
+* VS Code
+* Git
+* GitHub
+* HeidiSQL
+
+---
+
+# Environment Setup
+
+## 1. Tải Code (Clone)
 1. Mở Terminal (hoặc Git Bash, CMD) tại thư mục `htdocs` của XAMPP (thường là `C:\xampp\htdocs`):
 2. Chạy lệnh tải dự án:
    ```bash
@@ -16,12 +51,8 @@ Dự án website đặt vé xem phim sử dụng kiến trúc **PHP thuần (Van
    ```bash
    cd movie-ticket-booking
    ```
-4. **CHÚ Ý QUAN TRỌNG:** Phải chuyển sang nhánh `feature/architecture-one-page` (nhánh chứa cấu trúc mới nhất):
-   ```bash
-   git checkout feature/architecture-one-page
-   ```
 
-### Bước 1.2: Khởi tạo Cơ Sở Dữ Liệu (Database)
+## 2. Khởi tạo Cơ Sở Dữ Liệu (Database)
 
 Dự án sử dụng cơ sở dữ liệu chung tên là: **`movie_ticket_booking`**. (User mặc định là `root`, pass rỗng `""`).
 
@@ -31,20 +62,16 @@ Dự án sử dụng cơ sở dữ liệu chung tên là: **`movie_ticket_bookin
 4. Chọn tab **Import (Nhập)**, chọn file `Database/BookingTicketDatabase.sql` có trong thư mục dự án.
 5. Bấm **Go (Thực hiện)**.
 
-### Bước 1.3: Chạy Dự Án
+## 3. Chạy Dự Án
 - 🏠 **Trang khách hàng:** [http://localhost/movie-ticket-booking/](http://localhost/movie-ticket-booking/)
 - 🔑 **Trang Đăng nhập:** [http://localhost/movie-ticket-booking/login.php](http://localhost/movie-ticket-booking/login.php)
 > **Tài khoản test (Admin):** `admin@example.com` / `password`
 
-
-
 ---
 
-## 🏗️ 2. Hướng Dẫn Kiến Trúc Dự Án (Dành cho Lập trình viên)
+# Project Structure (Hybrid MVC)
 
-Từ Phase 2, dự án KHÔNG CÒN viết SQL trực tiếp vào các file giao diện (như `login.php` hay `index.php`). Thay vào đó, tất cả tuân theo kiến trúc **Phân tầng (Hybrid MVC)**.
-
-### Cấu trúc thư mục
+Từ Phase 2, tất cả tuân theo kiến trúc **Phân tầng (Hybrid MVC)**.
 
 ```text
 movie-ticket-booking/
@@ -54,15 +81,12 @@ movie-ticket-booking/
 │   │
 │   ├── Models/                 # TẦNG 1: Tương tác Database
 │   │   ├── UserModel.php       # Chứa các câu SELECT, INSERT, UPDATE...
-│   │   └── ...                 # (Tuyệt đối không để logic kiểm tra ở đây)
 │   │
 │   ├── Services/               # TẦNG 2: Xử lý nghiệp vụ (Business Logic)
 │   │   ├── AuthService.php     # Kiểm tra pass, check ghế trống, tính tiền...
-│   │   └── ...                 # (Nơi xử lý chính của chức năng)
 │   │
 │   ├── Controllers/            # TẦNG 3: Nhận Request & Điều hướng
 │   │   ├── AuthController.php  # Nhận $_POST từ form, gọi Service tương ứng
-│   │   └── ...                 
 │   │
 │   └── init.php                # File Autoloader (tự động nạp class)
 │
@@ -75,16 +99,218 @@ movie-ticket-booking/
     └── login.php               
 ```
 
-### Quy trình làm việc nhóm (Workflow)
-Khi bạn được giao làm một chức năng mới (VD: **Booking - Đặt vé**), bạn cần làm theo 4 bước:
+---
 
-1. **Bước 1: Viết Model (`app/Models/BookingModel.php`)**
-   - Viết các hàm chứa câu lệnh SQL (`INSERT INTO bookings...`).
-2. **Bước 2: Viết Service (`app/Services/BookingService.php`)**
-   - Viết các hàm nghiệp vụ: Validate người dùng đã đăng nhập chưa, gọi Model để lưu vé, báo lỗi nếu hết ghế.
-3. **Bước 3: Viết Controller (`app/Controllers/BookingController.php`)**
-   - Viết hàm `handleRequest()` để lấy dữ liệu từ Form Submit (`$_POST`), đẩy vào Service.
-4. **Bước 4: Cập nhật View (File `.php` ở ngoài cùng hoặc trong `admin/`)**
-   - Khởi tạo Controller, lấy dữ liệu và chỉ dùng PHP để in kết quả (HTML/CSS).
+# Git Branch Strategy
 
-> **💡 Lời khuyên:** Hãy mở file `app/Controllers/AuthController.php` và file `login.php` ra xem. Nó là ví dụ điển hình nhất và dễ hiểu nhất để bạn làm theo! Đã có sẵn file `BookingModel` và `BookingService` dạng khung sườn chờ bạn code.
+## Main Branch
+
+```txt
+main
+```
+
+* Stable version
+* Demo version
+* Final release
+
+Không được commit trực tiếp vào main.
+
+---
+
+## Development Branch
+
+```txt
+develop
+```
+
+* Integration branch
+* Testing branch
+
+Không được commit trực tiếp vào develop.
+
+---
+
+## Feature Branches
+
+Ví dụ:
+
+```txt
+feature/authentication
+feature/movie-module
+feature/showtime-module
+feature/booking-module
+feature/admin-module
+feature/frontend-user
+feature/frontend-booking
+```
+
+Mỗi thành viên phát triển trên feature branch riêng.
+
+---
+
+# Development Workflow
+
+## Bước 1
+
+Luôn cập nhật develop mới nhất:
+
+```bash
+git checkout develop
+git pull origin develop
+```
+
+## Bước 2
+
+Tạo feature branch:
+
+```bash
+git checkout -b feature/module-name
+```
+
+Ví dụ:
+
+```bash
+git checkout -b feature/movie-crud
+```
+
+## Bước 3
+
+Thực hiện code và commit:
+
+```bash
+git add .
+git commit -m "feat: implement movie CRUD"
+```
+
+## Bước 4
+
+Push branch:
+
+```bash
+git push origin feature/movie-crud
+```
+
+## Bước 5
+
+Tạo Pull Request:
+
+```txt
+feature/movie-crud
+        ↓
+      develop
+```
+
+## Bước 6
+
+Chờ review.
+
+Sau khi được approve mới được merge.
+
+---
+
+# Pull Request Rules
+
+## Main Branch
+
+Điều kiện merge:
+
+* Pull Request bắt buộc
+* Tối thiểu 2 approvals
+* Resolve toàn bộ comments
+* Không force push
+* Không delete branch
+
+## Develop Branch
+
+Điều kiện merge:
+
+* Pull Request bắt buộc
+* Tối thiểu 1 approval
+* Resolve toàn bộ comments
+* Không force push
+* Không delete branch
+
+---
+
+# Team Rules
+
+## Không được
+
+* Commit trực tiếp lên main
+* Commit trực tiếp lên develop
+* Force push
+* Merge PR của chính mình
+* Push code chưa test
+
+## Bắt buộc
+
+* Pull latest develop trước khi code
+* Commit rõ ràng
+* Tạo Pull Request
+* Chờ review trước khi merge
+
+---
+
+# Commit Message Convention
+
+## Feature
+
+```txt
+feat: add login functionality
+```
+
+## Fix
+
+```txt
+fix: resolve booking validation bug
+```
+
+## Refactor
+
+```txt
+refactor: improve booking service
+```
+
+## Documentation
+
+```txt
+docs: update README
+```
+
+## Chore
+
+```txt
+chore: configure project structure
+```
+
+---
+
+# Contributors
+
+| Member              | Responsibility                                                       |
+| ------------------- | -------------------------------------------------------------------- |
+| Huỳnh Phạm Hữu Tiền | Team Leader, Architecture, Database, Authentication, Booking Backend |
+| Nhân                | Movie Module, Genre Module                                           |
+| Tiến                | Room, Seat, Showtime Module                                          |
+| Quỳnh Anh           | User Frontend                                                        |
+| Thịnh               | Booking Frontend                                                     |
+| TBD                 | Testing, Documentation, Admin UI                                     |
+
+---
+
+# Current Status
+
+* [x] Project Initialization
+* [x] Git Repository Setup
+* [x] GitHub Branch Protection
+* [x] Development Environment Setup
+* [ ] Database Design
+* [ ] Authentication Module
+* [ ] Movie Module
+* [ ] Showtime Module
+* [ ] Booking Module
+* [ ] Admin Module
+* [ ] Testing & Deployment
+
+```
+```
