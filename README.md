@@ -7,9 +7,7 @@ Dự án website đặt vé xem phim sử dụng kiến trúc **PHP thuần (Van
 ## 🚀 1. Hướng Dẫn Cài Đặt và Chạy Dự Án
 
 ### Bước 1.1: Tải Code (Clone)
-1. Mở Terminal (hoặc Git Bash, CMD) tại thư mục web server của bạn:
-   - **Nếu dùng XAMPP:** `C:\xampp\htdocs`
-   - **Nếu dùng Laragon:** `C:\laragon\www`
+1. Mở Terminal (hoặc Git Bash, CMD) tại thư mục `htdocs` của XAMPP (thường là `C:\xampp\htdocs`):
 2. Chạy lệnh tải dự án:
    ```bash
    git clone https://github.com/huutienSE/movie-ticket-booking.git
@@ -27,26 +25,18 @@ Dự án website đặt vé xem phim sử dụng kiến trúc **PHP thuần (Van
 
 Dự án sử dụng cơ sở dữ liệu chung tên là: **`movie_ticket_booking`**. (User mặc định là `root`, pass rỗng `""`).
 
-**A. Dành cho team dùng XAMPP:**
-1. Mở XAMPP Control Panel, Start `Apache` và `MySQL`.
+1. Mở bảng điều khiển **XAMPP Control Panel** và bấm **Start** 2 dịch vụ: `Apache` và `MySQL`.
 2. Truy cập phpMyAdmin: 👉 [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
 3. Tạo Database tên là `movie_ticket_booking` (Collation: `utf8mb4_general_ci`).
 4. Chọn tab **Import (Nhập)**, chọn file `Database/BookingTicketDatabase.sql` có trong thư mục dự án.
 5. Bấm **Go (Thực hiện)**.
-
-**B. Dành cho team dùng Laragon:**
-1. Mở Laragon, bấm **Start All** (đảm bảo Apache và MySQL đang chạy).
-2. Bấm nút **Database** trên giao diện Laragon (nó sẽ mở HeidiSQL).
-3. Đăng nhập với User `root`, password rỗng.
-4. Chuột phải vào cột bên trái → Tạo mới → Cơ sở dữ liệu... → Đặt tên là `movie_ticket_booking`.
-5. Bấm vào Database vừa tạo, chọn **Tệp (File)** → **Chạy mã SQL (Load SQL file)**, chọn file `Database/BookingTicketDatabase.sql`. Bấm F9 (Thực thi) để import.
 
 ### Bước 1.3: Chạy Dự Án
 - 🏠 **Trang khách hàng:** [http://localhost/movie-ticket-booking/](http://localhost/movie-ticket-booking/)
 - 🔑 **Trang Đăng nhập:** [http://localhost/movie-ticket-booking/login.php](http://localhost/movie-ticket-booking/login.php)
 > **Tài khoản test (Admin):** `admin@example.com` / `password`
 
-*(Nếu bạn dùng Laragon có tính năng Pretty URL, bạn có thể truy cập `http://movie-ticket-booking.test`)*
+
 
 ---
 
