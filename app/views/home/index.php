@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 <!-- http://localhost/MOVIE-TICKET-BOOKING/app/views/home/index.php -->
 
 <?php
 require_once __DIR__ . '/../layouts/header.php';
 ?>
 
+=======
+>>>>>>> 2c1b65fcec7dd72db50b3549c364743eb018f23f
 <div class="banner-section">
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
@@ -51,8 +54,12 @@ require_once __DIR__ . '/../layouts/header.php';
             prevEl: ".swiper-button-prev",
         },
     });
+<<<<<<< HEAD
 </script>
 
 <?php
 require_once __DIR__ . '/../layouts/footer.php';
 ?>
+=======
+</script>
+>>>>>>> 2c1b65fcec7dd72db50b3549c364743eb018f23f
