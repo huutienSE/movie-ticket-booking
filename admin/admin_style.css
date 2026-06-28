@@ -1,6 +1,7 @@
 /* Admin Panel Style - Red & Black Theme */
 body {
-    background-color: #f4f6f9; /* Nền nhạt cho nội dung để dễ đọc */
+    background-color: #121212; /* Nền đen đậm cho toàn trang */
+    color: #e0e0e0; /* Chữ màu xám sáng */
     font-family: 'Josefin Sans', sans-serif;
 }
 
@@ -11,7 +12,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #1a1a1a; /* Đen đậm */
+    background-color: #000000; /* Sidebar đen tuyền */
     color: #fff;
     z-index: 1000;
     overflow-y: auto;
@@ -83,6 +84,43 @@ body {
     font-size: 1.8rem;
 }
 
+/* Base Card Styling cho Dark Theme */
+.card {
+    background-color: #1a1a1a;
+    border: 1px solid #333 !important;
+    color: #fff;
+}
+.card-header {
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #333 !important;
+    color: #fff !important;
+}
+
+/* List group (cho danh sách phim) */
+.list-group-item {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+    border-color: #333 !important;
+}
+
+/* Bảng table Dark Theme */
+.table {
+    color: #e0e0e0 !important;
+    border-color: #333 !important;
+}
+.table-hover tbody tr:hover {
+    color: #fff !important;
+    background-color: #2a2a2a !important;
+}
+.table-light th, .table thead th {
+    background-color: #000 !important;
+    color: #e50914 !important;
+    border-color: #333 !important;
+}
+.table td, .table th {
+    border-color: #333 !important;
+}
+
 /* Theme Utilities */
 .bg-dark-black {
     background-color: #1a1a1a !important;
@@ -114,4 +152,40 @@ body {
     width: 100%;
     padding: 15px;
     border-top: 1px solid #333;
+}
+
+/* Bổ sung CSS cho Modal và Form Dark Theme */
+.modal-content {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    border: 1px solid #333;
+}
+
+.modal-header {
+    border-bottom: 1px solid #333;
+}
+
+.modal-footer {
+    border-top: 1px solid #333;
+}
+
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.form-control, .form-select {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #2a2a2a;
+    color: #fff;
+    border-color: #e50914;
+    box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+}
+
+.form-label {
+    color: #ccc;
 }

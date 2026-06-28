@@ -102,8 +102,8 @@ $now_showing = mysqli_query($conn, $query_now_showing);
     <div class="row g-4">
         <!-- Bảng Đặt vé gần đây -->
         <div class="col-md-7">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm h-100">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2 text-netflix-red"></i> Đặt vé gần đây</h5>
                     <a href="manage_booking.php" class="btn btn-sm btn-outline-secondary">Xem tất cả</a>
                 </div>
@@ -148,8 +148,8 @@ $now_showing = mysqli_query($conn, $query_now_showing);
 
         <!-- Bảng Phim đang chiếu -->
         <div class="col-md-5">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm h-100">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold"><i class="bi bi-play-circle me-2 text-netflix-red"></i> Phim đang chiếu</h5>
                     <a href="manage_movies.php" class="btn btn-sm btn-outline-secondary">Xem tất cả</a>
                 </div>

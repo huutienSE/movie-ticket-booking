@@ -3,7 +3,9 @@
  * KIẾN THỨC PHP: Security & Include
  * Header này sẽ được gọi ở TẤT CẢ các trang trong thư mục admin/
  */
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Kiểm tra quyền Admin: Phải đăng nhập và có role là 'admin'
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
