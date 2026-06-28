@@ -4,11 +4,11 @@ Dự án website đặt vé xem phim sử dụng kiến trúc **PHP thuần (Van
 
 ## 🚀 Hướng Dẫn Cài Đặt và Chạy Dự Án
 
-Để chạy dự án này trên máy cá nhân bằng **XAMPP** hoặc **Laragon**, bạn hãy làm theo các bước đơn giản sau:
+Để chạy dự án này trên máy cá nhân bằng **XAMPP**, bạn hãy làm theo các bước đơn giản sau:
 
 ### Bước 1: Tải Code (Clone) từ GitHub
 
-1. Mở Terminal (hoặc Git Bash, CMD) tại thư mục `htdocs` (nếu dùng XAMPP) hoặc `www` (nếu dùng Laragon).
+1. Mở Terminal (hoặc Git Bash, CMD) tại thư mục `htdocs` của XAMPP (thường là `C:\xampp\htdocs`).
 2. Chạy lệnh clone dự án:
    ```bash
    git clone https://github.com/huutienSE/movie-ticket-booking.git
@@ -24,7 +24,7 @@ Dự án website đặt vé xem phim sử dụng kiến trúc **PHP thuần (Van
 
 ### Bước 2: Khởi tạo Cơ Sở Dữ Liệu (Database)
 
-1. Mở bảng điều khiển XAMPP / Laragon và bấm **Start** 2 dịch vụ: `Apache` và `MySQL`.
+1. Mở bảng điều khiển **XAMPP Control Panel** và bấm **Start** 2 dịch vụ: `Apache` và `MySQL`.
 2. Mở trình duyệt và truy cập vào trang quản lý MySQL (phpMyAdmin): 
    👉 [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
 3. Tạo một Database mới với tên chính xác là:
