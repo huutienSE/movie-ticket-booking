@@ -80,7 +80,7 @@ movie-ticket-booking/
 │   ├── manage_movies.php       # Gọi Controller để lấy mảng data và foreach HTML
 │   └── ...
 │
-└── public / root               # GIAO DIỆN KHÁCH HÀNG
+└── (Thư mục gốc)               # GIAO DIỆN KHÁCH HÀNG (Nằm ngay ngoài cùng)
     ├── index.php               
     └── login.php               
 ```
