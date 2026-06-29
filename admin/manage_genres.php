@@ -48,11 +48,9 @@ $genres_list = $controller->getAllGenres();
     <?php endif; ?>
 
     <div class="admin-card">
-        <div class="admin-card-header">
-            <h5><i class="bi bi-tags me-2 text-netflix-red"></i>Danh sách thể loại</h5>
-        </div>
+        <h5 class="mb-3 text-white"><i class="bi bi-tags me-2"></i>Danh sách thể loại</h5>
         <div class="table-responsive">
-            <table class="table admin-table align-middle mb-0">
+            <table class="table table-hover admin-table align-middle mb-0">
                 <thead>
                     <tr>
                         <th width="5%">ID</th>
@@ -111,7 +109,7 @@ $genres_list = $controller->getAllGenres();
         <div class="modal-content">
             <form action="" method="POST">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-tags me-2 text-netflix-red"></i>Thêm thể loại mới</h5>
+                    <h5 class="modal-title"><i class="bi bi-tags me-2"></i>Thêm thể loại mới</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body">
@@ -139,7 +137,7 @@ $genres_list = $controller->getAllGenres();
         <div class="modal-content">
             <form action="" method="POST">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2 text-netflix-red"></i>Cập nhật thể loại</h5>
+                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Cập nhật thể loại</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body">

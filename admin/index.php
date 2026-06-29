@@ -89,12 +89,12 @@ $now_showing = mysqli_query($conn, $query_now_showing);
     <div class="row g-4">
         <div class="col-xl-7">
             <div class="admin-card h-100">
-                <div class="admin-card-header">
-                    <h5><i class="bi bi-clock-history me-2 text-netflix-red"></i>Đặt vé gần đây</h5>
+                <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <h5 class="mb-0 text-white"><i class="bi bi-clock-history me-2"></i>Đặt vé gần đây</h5>
                     <a href="manage_booking.php" class="btn btn-sm btn-admin-secondary">Xem tất cả</a>
                 </div>
                 <div class="table-responsive">
-                    <table class="table admin-table align-middle mb-0">
+                    <table class="table table-hover admin-table align-middle mb-0">
                         <thead>
                             <tr>
                                 <th>Mã đặt</th>
@@ -139,8 +139,8 @@ $now_showing = mysqli_query($conn, $query_now_showing);
 
         <div class="col-xl-5">
             <div class="admin-card h-100">
-                <div class="admin-card-header">
-                    <h5><i class="bi bi-play-circle me-2 text-netflix-red"></i>Phim đang chiếu</h5>
+                <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <h5 class="mb-0 text-white"><i class="bi bi-play-circle me-2"></i>Phim đang chiếu</h5>
                     <a href="manage_movies.php" class="btn btn-sm btn-admin-secondary">Xem tất cả</a>
                 </div>
                 <ul class="list-group list-group-flush admin-movie-list">

@@ -49,11 +49,9 @@ $movies_result = $controller->getAllMovies();
     <?php endif; ?>
 
     <div class="admin-card">
-        <div class="admin-card-header">
-            <h5><i class="bi bi-camera-reels me-2 text-netflix-red"></i>Danh sách phim</h5>
-        </div>
+        <h5 class="mb-3 text-white"><i class="bi bi-camera-reels me-2"></i>Danh sách phim</h5>
         <div class="table-responsive">
-            <table class="table admin-table align-middle mb-0">
+            <table class="table table-hover admin-table align-middle mb-0">
                 <thead>
                     <tr>
                         <th width="5%">ID</th>
@@ -116,7 +114,7 @@ $movies_result = $controller->getAllMovies();
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div class="admin-empty">
                                     <i class="bi bi-camera-reels"></i>
                                     <span>Chưa có phim nào. Hãy thêm phim đầu tiên.</span>
@@ -138,7 +136,7 @@ function renderMovieFormModal($modalId, $title, $actionValue, $genres_list) {
         <div class="modal-content">
             <form action="" method="POST" id="form_<?= $actionValue ?>">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-camera-reels me-2 text-netflix-red"></i><?= $title ?></h5>
+                    <h5 class="modal-title"><i class="bi bi-camera-reels me-2"></i><?= $title ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body">

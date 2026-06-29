@@ -65,18 +65,6 @@ a:hover {
     color: var(--admin-muted) !important;
 }
 
-.text-netflix-red {
-    color: var(--admin-danger) !important;
-}
-
-.bg-netflix-red {
-    background-color: var(--admin-danger) !important;
-}
-
-.bg-dark-black {
-    background-color: var(--admin-surface) !important;
-}
-
 /* Sidebar */
 .admin-sidebar {
     position: fixed;
@@ -144,7 +132,7 @@ a:hover {
 
 .admin-sidebar .nav-link i {
     width: 22px;
-    color: #d8d8d8;
+    color: #ffffff;
     font-size: 1.15rem;
 }
 
@@ -162,7 +150,7 @@ a:hover {
 
 .admin-sidebar .nav-link.active i,
 .admin-sidebar .nav-link:hover i {
-    color: var(--admin-danger);
+    color: #ffffff;
 }
 
 .sidebar-footer {
@@ -202,9 +190,9 @@ a:hover {
     background: #1f1f1f;
     color: var(--admin-text);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+    padding: 20px;
 }
 
-.admin-card-header,
 .card-header {
     display: flex;
     align-items: center;
@@ -216,14 +204,23 @@ a:hover {
     color: var(--admin-text) !important;
 }
 
-.admin-card-header h2,
-.admin-card-header h3,
-.admin-card-header h5,
 .card-header h2,
 .card-header h3,
 .card-header h5 {
     margin: 0;
     font-weight: 700;
+}
+
+.admin-card > h4,
+.admin-card > h5 {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.admin-card i,
+.modal-title i,
+.admin-empty i {
+    color: #ffffff !important;
 }
 
 /* Dashboard stats */
@@ -299,7 +296,7 @@ a:hover {
     border: 1px solid var(--stat-border);
     border-radius: var(--admin-radius);
     background: var(--stat-bg);
-    color: var(--stat-color);
+    color: #ffffff;
     font-size: 1.8rem;
 }
 
@@ -349,7 +346,8 @@ a:hover {
 
 .admin-table td,
 .admin-table td i,
-.admin-table th i {
+.admin-table th i,
+.admin-icon-btn i {
     color: #ffffff;
 }
 
@@ -363,6 +361,11 @@ a:hover {
     border-color: rgba(255, 255, 255, 0.16) !important;
     background: #1f1f1f !important;
     color: var(--admin-text) !important;
+}
+
+.list-group-flush {
+    border-radius: 0;
+    overflow: hidden;
 }
 
 .admin-movie-list .list-group-item:hover {
@@ -386,6 +389,10 @@ a:hover {
 .btn {
     border-radius: 6px;
     font-weight: 700;
+}
+
+.btn i {
+    color: #ffffff !important;
 }
 
 .btn-netflix-red {
@@ -596,7 +603,7 @@ a:hover {
 }
 
 .admin-empty i {
-    color: var(--admin-danger);
+    color: #ffffff;
     font-size: 1.35rem;
 }
 
