@@ -40,16 +40,14 @@ class MovieModel {
     }
 
     public function insertMovieGenres($movieId, $genreIds) {
-        if (empty($genreIds)) return true;
+        if (empty($genreIds)) return;
         $genre_stmt = mysqli_prepare($this->conn, "INSERT INTO movie_genre (movie_id, genre_id) VALUES (?, ?)");
-        $success = true;
-        foreach ($genreIds as $g_id) {
-            mysqli_stmt_bind_param($genre_stmt, "ii", $movieId, $g_id);
-            if (!mysqli_stmt_execute($genre_stmt)) {
-                $success = false;
+        if ($genre_stmt) {
+            foreach ($genreIds as $g_id) {
+                mysqli_stmt_bind_param($genre_stmt, "ii", $movieId, $g_id);
+                mysqli_stmt_execute($genre_stmt);
             }
         }
-        return $success;
     }
 
     public function deleteMovieGenres($movieId) {
