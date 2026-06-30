@@ -1,69 +1,13 @@
 <?php
 require_once '../config.php';
+require_once '../app/init.php';
 require_once 'admin_header.php';
 require_once 'admin_sidebar.php';
 
-// Dashboard statistics
-$result_movies = mysqli_query($conn, "SELECT COUNT(*) as count FROM movies");
-$total_movies = mysqli_fetch_assoc($result_movies)['count'];
+use App\Controllers\DashboardController;
 
-$result_users = mysqli_query($conn, "SELECT COUNT(*) as count FROM users WHERE role='user'");
-$total_users = mysqli_fetch_assoc($result_users)['count'];
-
-$result_bookings = mysqli_query($conn, "SELECT COUNT(*) as count FROM bookings");
-$total_bookings = mysqli_fetch_assoc($result_bookings)['count'];
-
-$result_revenue = mysqli_query($conn, "SELECT SUM(total_price) as total FROM bookings WHERE status='paid'");
-$total_revenue = mysqli_fetch_assoc($result_revenue)['total'] ?? 0;
-
-$result_today_bookings = mysqli_query($conn, "SELECT COUNT(*) as count FROM bookings WHERE DATE(created_at) = CURDATE()");
-$today_bookings_count = mysqli_fetch_assoc($result_today_bookings)['count'];
-
-// 1. Đặt vé hôm nay
-$query_today_bookings = "
-    SELECT b.id, b.booking_code, b.total_price, b.status, b.created_at, u.first_name, u.last_name, 
-           m.title as movie_name, r.name as room_name, st.start_time,
-           GROUP_CONCAT(CONCAT(s.seat_row, s.seat_number) SEPARATOR ', ') as seats
-    FROM bookings b
-    JOIN users u ON b.user_id = u.id
-    LEFT JOIN tickets t ON t.booking_id = b.id
-    LEFT JOIN showtimes st ON t.showtime_id = st.id
-    LEFT JOIN movies m ON st.movie_id = m.id
-    LEFT JOIN rooms r ON st.room_id = r.id
-    LEFT JOIN seats s ON t.seat_id = s.id
-    WHERE DATE(b.created_at) = CURDATE()
-    GROUP BY b.id
-    ORDER BY b.created_at DESC
-    LIMIT 10
-";
-$today_bookings_list = mysqli_query($conn, $query_today_bookings);
-
-// 2. Phim phổ biến nhất
-$query_popular_movies = "
-    SELECT m.title as movie_name, COUNT(t.id) as ticket_count, SUM(t.price) as revenue
-    FROM tickets t
-    JOIN showtimes st ON t.showtime_id = st.id
-    JOIN movies m ON st.movie_id = m.id
-    JOIN bookings b ON t.booking_id = b.id
-    WHERE b.status = 'paid'
-    GROUP BY m.id
-    ORDER BY ticket_count DESC
-    LIMIT 5
-";
-$popular_movies = mysqli_query($conn, $query_popular_movies);
-
-// 3. Khách hàng thân thiết
-$query_loyal_customers = "
-    SELECT u.first_name, u.last_name, COUNT(t.id) as ticket_count, SUM(t.price) as total_spent
-    FROM tickets t
-    JOIN bookings b ON t.booking_id = b.id
-    JOIN users u ON b.user_id = u.id
-    WHERE b.status = 'paid'
-    GROUP BY u.id
-    ORDER BY total_spent DESC
-    LIMIT 5
-";
-$loyal_customers = mysqli_query($conn, $query_loyal_customers);
+$controller = new DashboardController();
+$data = $controller->index();
 ?>
 
 <div class="container-fluid">
@@ -83,7 +27,7 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                 </div>
                 <div class="ms-4 text-white">
                     <p class="mb-1 text-white text-opacity-75 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Tổng phim</p>
-                    <h3 class="mb-0 fw-bold"><?= number_format($total_movies) ?></h3>
+                    <h3 class="mb-0 fw-bold"><?= number_format($data['total_movies']) ?></h3>
                 </div>
             </div>
         </div>
@@ -94,7 +38,7 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                 </div>
                 <div class="ms-4 text-white">
                     <p class="mb-1 text-white text-opacity-75 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Người dùng</p>
-                    <h3 class="mb-0 fw-bold"><?= number_format($total_users) ?></h3>
+                    <h3 class="mb-0 fw-bold"><?= number_format($data['total_users']) ?></h3>
                 </div>
             </div>
         </div>
@@ -105,7 +49,7 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                 </div>
                 <div class="ms-4 text-white">
                     <p class="mb-1 text-white text-opacity-75 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Vé đã bán</p>
-                    <h3 class="mb-0 fw-bold"><?= number_format($total_bookings) ?></h3>
+                    <h3 class="mb-0 fw-bold"><?= number_format($data['total_bookings']) ?></h3>
                 </div>
             </div>
         </div>
@@ -116,7 +60,7 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                 </div>
                 <div class="ms-4 text-white">
                     <p class="mb-1 text-white text-opacity-75 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Doanh thu</p>
-                    <h3 class="mb-0 fw-bold"><?= number_format($total_revenue / 1000000, 1) ?>M</h3>
+                    <h3 class="mb-0 fw-bold"><?= number_format($data['total_revenue'] / 1000000, 1) ?>M</h3>
                 </div>
             </div>
         </div>
@@ -127,7 +71,7 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
         <div class="col-12">
             <div class="admin-card">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0 text-white"><i class="bi bi-calendar-day me-2"></i>Đặt vé hôm nay (<?= $today_bookings_count ?> vé)</h5>
+                    <h5 class="mb-0 text-white"><i class="bi bi-calendar-day me-2"></i>Đặt vé hôm nay (<?= $data['today_bookings_count'] ?> vé)</h5>
                     <a href="manage_booking.php" class="btn btn-sm btn-admin-secondary">Quản lý vé</a>
                 </div>
                 <div class="table-responsive">
@@ -145,8 +89,8 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($today_bookings_list && mysqli_num_rows($today_bookings_list) > 0): ?>
-                                <?php while ($row = mysqli_fetch_assoc($today_bookings_list)): ?>
+                            <?php if (!empty($data['today_bookings_list'])): ?>
+                                <?php foreach ($data['today_bookings_list'] as $row): ?>
                                     <tr>
                                         <td><strong><?= htmlspecialchars($row['booking_code']) ?></strong></td>
                                         <td><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
@@ -165,7 +109,7 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                                             <?php endif; ?>
                                         </td>
                                     </tr>
-                                <?php endwhile; ?>
+                                <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="8" class="text-center py-4 text-muted">
@@ -195,14 +139,14 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($popular_movies && mysqli_num_rows($popular_movies) > 0): ?>
-                                <?php while ($row = mysqli_fetch_assoc($popular_movies)): ?>
+                            <?php if (!empty($data['popular_movies'])): ?>
+                                <?php foreach ($data['popular_movies'] as $row): ?>
                                     <tr>
                                         <td class="fw-bold text-white"><?= htmlspecialchars($row['movie_name']) ?></td>
                                         <td><?= $row['ticket_count'] ?></td>
                                         <td class="text-success fw-bold"><?= number_format($row['revenue'], 0, ',', '.') ?>đ</td>
                                     </tr>
-                                <?php endwhile; ?>
+                                <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="3" class="text-center py-4 text-muted">Chưa có dữ liệu</td>
@@ -227,14 +171,14 @@ $loyal_customers = mysqli_query($conn, $query_loyal_customers);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($loyal_customers && mysqli_num_rows($loyal_customers) > 0): ?>
-                                <?php while ($row = mysqli_fetch_assoc($loyal_customers)): ?>
+                            <?php if (!empty($data['loyal_customers'])): ?>
+                                <?php foreach ($data['loyal_customers'] as $row): ?>
                                     <tr>
                                         <td class="fw-bold text-white"><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
                                         <td><?= $row['ticket_count'] ?></td>
                                         <td class="text-warning fw-bold"><?= number_format($row['total_spent'], 0, ',', '.') ?>đ</td>
                                     </tr>
-                                <?php endwhile; ?>
+                                <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="3" class="text-center py-4 text-muted">Chưa có dữ liệu</td>

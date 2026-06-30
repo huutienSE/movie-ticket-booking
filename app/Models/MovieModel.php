@@ -105,6 +105,14 @@ class MovieModel {
         return $movies;
     }
 
+    public function getTotalMovies() {
+        $result = mysqli_query($this->conn, "SELECT COUNT(*) as count FROM movies");
+        if ($result) {
+            return mysqli_fetch_assoc($result)['count'];
+        }
+        return 0;
+    }
+
     public function getError() {
         return mysqli_error($this->conn);
     }
