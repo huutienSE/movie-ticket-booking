@@ -157,7 +157,7 @@ $data = $controller->index();
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-6">
             <div class="admin-card h-100">
                 <h5 class="mb-3 text-white"><i class="bi bi-award me-2 text-warning"></i>Khách hàng thân thiết</h5>

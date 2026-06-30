@@ -113,12 +113,12 @@ $movies_result = $controller->getAllMovies();
                     <div class="mb-3">
                         <label class="form-label d-block border-bottom border-secondary pb-2">Thể loại phim</label>
                         <div class="row g-2 mt-1">
-                            <?php 
+                            <?php
                             $selected_genres = [];
                             if ($edit_movie && !empty($edit_movie['genre_ids'])) {
                                 $selected_genres = explode(',', $edit_movie['genre_ids']);
                             }
-                            foreach ($genres_list as $g): 
+                            foreach ($genres_list as $g):
                                 $isChecked = in_array($g['id'], $selected_genres) ? 'checked' : '';
                             ?>
                                 <div class="col-6 form-check">
