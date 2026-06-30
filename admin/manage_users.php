@@ -43,17 +43,11 @@ $stats = $controller->getStats();
     </div>
 
     <?php if ($success_msg): ?>
-        <div class="alert admin-alert admin-alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle me-2"></i> <?= htmlspecialchars($success_msg) ?>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Đóng"></button>
-        </div>
+        <script>window.alert('<?= addslashes($success_msg) ?>');</script>
     <?php endif; ?>
 
     <?php if ($error_msg): ?>
-        <div class="alert admin-alert admin-alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle me-2"></i> <?= htmlspecialchars($error_msg) ?>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Đóng"></button>
-        </div>
+        <script>window.alert('Lỗi: <?= addslashes($error_msg) ?>');</script>
     <?php endif; ?>
 
     <!-- Thống kê -->

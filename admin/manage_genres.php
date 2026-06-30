@@ -38,16 +38,10 @@ $genres_list = $controller->getAllGenres();
     </div>
 
     <?php if ($success_msg): ?>
-        <div class="alert admin-alert admin-alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle me-2"></i> <?= htmlspecialchars($success_msg) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
-        </div>
+        <script>window.alert('<?= addslashes($success_msg) ?>');</script>
     <?php endif; ?>
     <?php if ($error_msg): ?>
-        <div class="alert admin-alert admin-alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle me-2"></i> <?= htmlspecialchars($error_msg) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
-        </div>
+        <script>window.alert('Lỗi: <?= addslashes($error_msg) ?>');</script>
     <?php endif; ?>
 
     <div class="admin-card mb-4">
@@ -98,27 +92,26 @@ $genres_list = $controller->getAllGenres();
                                 <td><?= htmlspecialchars($genre['description'] ?? 'Không có mô tả') ?></td>
                                 <td><?= date('d/m/Y H:i', strtotime($genre['created_at'])) ?></td>
                                 <td class="text-center">
-                                    <a href="manage_genres.php?edit_id=<?= $genre['id'] ?>" class="btn btn-sm btn-outline-info admin-icon-btn me-1" title="Sửa thể loại">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="manage_genres.php?edit_id=<?= $genre['id'] ?>" class="btn btn-sm btn-outline-info admin-icon-btn" title="Sửa thể loại">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
 
-                                    <form action="" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thể loại này? Phim thuộc thể loại này sẽ bị gỡ thẻ.');">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="id" value="<?= $genre['id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger admin-icon-btn" title="Xóa thể loại" aria-label="Xóa thể loại">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                        <form action="" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thể loại này? Phim thuộc thể loại này sẽ bị gỡ thẻ.');">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="id" value="<?= $genre['id'] ?>">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger admin-icon-btn" title="Xóa thể loại" aria-label="Xóa thể loại">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5">
-                                <div class="admin-empty d-flex align-items-center justify-content-center gap-2">
-                                    <i class="bi bi-tags"></i>
-                                    <span>Chưa có thể loại nào. Hãy thêm mới.</span>
-                                </div>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-tags me-2"></i>Chưa có thể loại nào. Hãy thêm mới.
                             </td>
                         </tr>
                     <?php endif; ?>
