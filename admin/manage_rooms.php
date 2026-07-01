@@ -22,6 +22,17 @@ if ($actionResult) {
 
 $rooms_list = $controller->getAllRooms();
 $theatres_list = $controller->getAllTheatres();
+$edit_room = null;
+
+if (isset($_GET['edit_id'])) {
+    $edit_id = (int) $_GET['edit_id'];
+    foreach ($rooms_list as $room) {
+        if ((int) $room['id'] === $edit_id) {
+            $edit_room = $room;
+            break;
+        }
+    }
+}
 ?>
 
 <div class="container-fluid">
@@ -30,23 +41,41 @@ $theatres_list = $controller->getAllTheatres();
             <h1 class="mb-0 text-white fw-bold">Quản lý phòng chiếu</h1>
             <p class="mb-0 mt-2 text-muted">Gán phòng cho từng rạp. Tên phòng phải duy nhất trong toàn hệ thống.</p>
         </div>
-        <button type="button" class="btn btn-netflix-red" data-bs-toggle="modal" data-bs-target="#addRoomModal">
-            <i class="bi bi-plus-lg me-1"></i> Thêm phòng
-        </button>
     </div>
 
     <?php if ($success_msg): ?>
-        <div class="alert admin-alert admin-alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle me-2"></i> <?= htmlspecialchars($success_msg) ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
         </div>
     <?php endif; ?>
     <?php if ($error_msg): ?>
-        <div class="alert admin-alert admin-alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle me-2"></i> <?= htmlspecialchars($error_msg) ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
         </div>
     <?php endif; ?>
+
+    <div class="admin-card mb-4">
+        <h5 class="mb-3 text-white">
+            <i class="bi bi-door-open me-2"></i><?= $edit_room ? 'Cập nhật phòng chiếu' : 'Thêm phòng chiếu' ?>
+        </h5>
+        <form action="manage_rooms.php" method="POST">
+            <input type="hidden" name="action" value="<?= $edit_room ? 'edit' : 'add' ?>">
+            <?php if ($edit_room): ?>
+                <input type="hidden" name="id" value="<?= $edit_room['id'] ?>">
+            <?php endif; ?>
+            <?php renderRoomFormFields('room_form', $theatres_list, $edit_room); ?>
+            <div class="mt-3 text-end">
+                <?php if ($edit_room): ?>
+                    <a href="manage_rooms.php" class="btn btn-outline-light me-2">Hủy</a>
+                <?php endif; ?>
+                <button type="submit" class="btn btn-netflix-red">
+                    <?= $edit_room ? 'Lưu thay đổi' : 'Thêm phòng' ?>
+                </button>
+            </div>
+        </form>
+    </div>
 
     <div class="admin-card">
         <h5 class="mb-3 text-white"><i class="bi bi-door-open me-2"></i>Danh sách phòng chiếu</h5>
@@ -78,18 +107,16 @@ $theatres_list = $controller->getAllTheatres();
                                 <td><?= (int)$room['seat_count'] ?></td>
                                 <td>
                                     <?php if ($room['is_active']): ?>
-                                        <span class="status-badge status-success">Hoạt động</span>
+                                        <span class="badge bg-success">Hoạt động</span>
                                     <?php else: ?>
-                                        <span class="status-badge status-secondary">Tạm ngưng</span>
+                                        <span class="badge bg-secondary">Tạm ngưng</span>
                                     <?php endif; ?>
                                 </td>
                                 <td><?= date('d/m/Y H:i', strtotime($room['created_at'])) ?></td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-info admin-icon-btn me-1 edit-room-btn"
-                                            title="Sửa phòng"
-                                            data-room='<?= htmlspecialchars(json_encode($room, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>'>
+                                    <a href="manage_rooms.php?edit_id=<?= $room['id'] ?>" class="btn btn-sm btn-outline-info admin-icon-btn me-1" title="Sửa phòng">
                                         <i class="bi bi-pencil-square"></i>
-                                    </button>
+                                    </a>
                                     <form action="" method="POST" class="d-inline" onsubmit="return confirm('Xóa phòng này sẽ xóa toàn bộ ghế và suất chiếu liên quan. Bạn có chắc chắn?');">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id" value="<?= $room['id'] ?>">
@@ -117,7 +144,7 @@ $theatres_list = $controller->getAllTheatres();
 </div>
 
 <?php
-function renderRoomFormFields($prefix, $theatres_list, $isEdit = false) {
+function renderRoomFormFields($prefix, $theatres_list, $room = null) {
 ?>
     <div class="row g-3">
         <div class="col-md-6">
@@ -125,85 +152,27 @@ function renderRoomFormFields($prefix, $theatres_list, $isEdit = false) {
             <select class="form-select" name="theatre_id" id="<?= $prefix ?>_theatre_id" required>
                 <option value="">-- Chọn rạp --</option>
                 <?php foreach ($theatres_list as $theatre): ?>
-                    <option value="<?= $theatre['id'] ?>"><?= htmlspecialchars($theatre['name']) ?></option>
+                    <option value="<?= $theatre['id'] ?>" <?= (int)($room['theatre_id'] ?? 0) === (int)$theatre['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($theatre['name']) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="col-md-6">
             <label class="form-label">Tên phòng <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="name" id="<?= $prefix ?>_name" required placeholder="VD: Phòng 1">
+            <input type="text" class="form-control" name="name" id="<?= $prefix ?>_name" required placeholder="VD: Phòng 1" value="<?= htmlspecialchars($room['name'] ?? '') ?>">
         </div>
         <div class="col-md-6">
             <label class="form-label">Số ghế <span class="text-danger">*</span></label>
-            <input type="number" class="form-control" name="total_seats" id="<?= $prefix ?>_total_seats" min="1" value="40" required>
+            <input type="number" class="form-control" name="total_seats" id="<?= $prefix ?>_total_seats" min="1" value="<?= htmlspecialchars((string)($room['total_seats'] ?? 40)) ?>" required>
         </div>
         <div class="col-md-6 d-flex align-items-end">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="is_active" id="<?= $prefix ?>_is_active" checked>
+                <input class="form-check-input" type="checkbox" name="is_active" id="<?= $prefix ?>_is_active" <?= !isset($room['is_active']) || $room['is_active'] ? 'checked' : '' ?>>
                 <label class="form-check-label" for="<?= $prefix ?>_is_active">Phòng đang hoạt động</label>
             </div>
         </div>
     </div>
 <?php } ?>
-
-<div class="modal fade" id="addRoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-door-open me-2"></i>Thêm phòng chiếu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="add">
-                    <?php renderRoomFormFields('add', $theatres_list); ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-admin-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-netflix-red">Thêm mới</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editRoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Cập nhật phòng chiếu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="edit">
-                    <input type="hidden" name="id" id="edit_room_id">
-                    <?php renderRoomFormFields('edit', $theatres_list, true); ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-admin-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-netflix-red">Lưu thay đổi</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const editModal = new bootstrap.Modal(document.getElementById('editRoomModal'));
-    document.querySelectorAll('.edit-room-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const room = JSON.parse(this.getAttribute('data-room'));
-            document.getElementById('edit_room_id').value = room.id;
-            document.getElementById('edit_theatre_id').value = room.theatre_id;
-            document.getElementById('edit_name').value = room.name || '';
-            document.getElementById('edit_total_seats').value = room.total_seats || 0;
-            document.getElementById('edit_is_active').checked = room.is_active == 1;
-            editModal.show();
-        });
-    });
-});
-</script>
 
 <?php require_once 'admin_footer.php'; ?>
