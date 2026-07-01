@@ -19,6 +19,7 @@ $reviewController = new ReviewController();
 // Xử lý gửi review
 $reviewResult = $reviewController->handleRequest();
 
+// phim
 $movie = $movieController->getMovieById($movieId);
 if (!$movie) {
     echo "Không tìm thấy phim.";
@@ -26,6 +27,7 @@ if (!$movie) {
     exit;
 }
 
+// lich chieu
 $showtimes = $showtimeController->getShowtimesByMovie($movieId);
 $reviews = $reviewController->getReviewsByMovie($movieId);
 ?>
