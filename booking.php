@@ -101,7 +101,7 @@ $seatMap = $seatController->getSeatMap($showtimeId, $showtime['room_id']);
 require_once 'footer.php';
 ?>
 
-// code tren 
+// code tren cua nhan
 
 <?php
 // booking.php - Hệ thống đặt vé xem phim tích hợp

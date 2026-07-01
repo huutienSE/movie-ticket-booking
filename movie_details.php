@@ -129,7 +129,7 @@ $reviews = $reviewController->getReviewsByMovie($movieId);
 require_once 'footer.php';
 ?>
 
-// code o tren  
+// code o tren cua nhan
 
 <?php
 // movie_details.php - Trang chi tiết phim
