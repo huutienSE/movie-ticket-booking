@@ -21,6 +21,17 @@ if ($actionResult) {
 }
 
 $theatres_list = $controller->getAllTheatres();
+$edit_theatre = null;
+
+if (isset($_GET['edit_id'])) {
+    $edit_id = (int) $_GET['edit_id'];
+    foreach ($theatres_list as $theatre) {
+        if ((int) $theatre['id'] === $edit_id) {
+            $edit_theatre = $theatre;
+            break;
+        }
+    }
+}
 ?>
 
 <div class="container-fluid">
@@ -29,23 +40,96 @@ $theatres_list = $controller->getAllTheatres();
             <h1 class="mb-0 text-white fw-bold">Quản lý rạp chiếu</h1>
             <p class="mb-0 mt-2 text-muted">Thêm, sửa và xóa thông tin rạp. Xóa rạp sẽ xóa toàn bộ phòng, ghế và suất chiếu liên quan.</p>
         </div>
-        <button type="button" class="btn btn-netflix-red" data-bs-toggle="modal" data-bs-target="#addTheatreModal">
-            <i class="bi bi-plus-lg me-1"></i> Thêm rạp
-        </button>
     </div>
 
     <?php if ($success_msg): ?>
-        <div class="alert admin-alert admin-alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle me-2"></i> <?= htmlspecialchars($success_msg) ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
         </div>
     <?php endif; ?>
     <?php if ($error_msg): ?>
-        <div class="alert admin-alert admin-alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle me-2"></i> <?= htmlspecialchars($error_msg) ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
         </div>
     <?php endif; ?>
+
+    <div class="admin-card mb-4">
+        <h5 class="mb-3 text-white">
+            <i class="bi bi-building me-2"></i><?= $edit_theatre ? 'Cập nhật rạp' : 'Thêm rạp mới' ?>
+        </h5>
+        <form action="manage_theatres.php" method="POST">
+            <input type="hidden" name="action" value="<?= $edit_theatre ? 'edit' : 'add' ?>">
+            <?php if ($edit_theatre): ?>
+                <input type="hidden" name="id" value="<?= $edit_theatre['id'] ?>">
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Tên rạp <span class="text-danger">*</span></label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        required
+                        placeholder="VD: CGV Vincom"
+                        value="<?= htmlspecialchars($edit_theatre['name'] ?? '') ?>"
+                    >
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Số phòng chiếu <span class="text-danger">*</span></label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="total_screens"
+                        min="1"
+                        required
+                        value="<?= htmlspecialchars((string)($edit_theatre['total_screens'] ?? 1)) ?>"
+                    >
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Địa chỉ</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="address"
+                        placeholder="Số nhà, đường, quận..."
+                        value="<?= htmlspecialchars($edit_theatre['address'] ?? '') ?>"
+                    >
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Thành phố</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="city"
+                        placeholder="VD: Hồ Chí Minh"
+                        value="<?= htmlspecialchars($edit_theatre['city'] ?? '') ?>"
+                    >
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Điện thoại</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="phone"
+                        placeholder="VD: 1900545415"
+                        value="<?= htmlspecialchars($edit_theatre['phone'] ?? '') ?>"
+                    >
+                </div>
+            </div>
+
+            <div class="mt-3 text-end">
+                <?php if ($edit_theatre): ?>
+                    <a href="manage_theatres.php" class="btn btn-outline-light me-2">Hủy</a>
+                <?php endif; ?>
+                <button type="submit" class="btn btn-netflix-red">
+                    <?= $edit_theatre ? 'Lưu thay đổi' : 'Thêm rạp' ?>
+                </button>
+            </div>
+        </form>
+    </div>
 
     <div class="admin-card">
         <h5 class="mb-3 text-white"><i class="bi bi-building me-2"></i>Danh sách rạp</h5>
@@ -75,11 +159,9 @@ $theatres_list = $controller->getAllTheatres();
                                 <td><?= (int)$theatre['total_screens'] ?></td>
                                 <td><?= (int)$theatre['room_count'] ?></td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-info admin-icon-btn me-1 edit-theatre-btn"
-                                            title="Sửa rạp"
-                                            data-theatre='<?= htmlspecialchars(json_encode($theatre, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>'>
+                                    <a href="manage_theatres.php?edit_id=<?= $theatre['id'] ?>" class="btn btn-sm btn-outline-info admin-icon-btn me-1" title="Sửa rạp">
                                         <i class="bi bi-pencil-square"></i>
-                                    </button>
+                                    </a>
                                     <form action="" method="POST" class="d-inline" onsubmit="return confirm('Xóa rạp này sẽ xóa toàn bộ phòng, ghế và suất chiếu liên quan. Bạn có chắc chắn?');">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id" value="<?= $theatre['id'] ?>">
@@ -105,108 +187,5 @@ $theatres_list = $controller->getAllTheatres();
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="addTheatreModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-building me-2"></i>Thêm rạp mới</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="add">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Tên rạp <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="name" required placeholder="VD: CGV Vincom">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Số phòng chiếu <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="total_screens" min="1" value="1" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-control" name="address" placeholder="Số nhà, đường, quận...">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Thành phố</label>
-                            <input type="text" class="form-control" name="city" placeholder="VD: Hồ Chí Minh">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Điện thoại</label>
-                            <input type="text" class="form-control" name="phone" placeholder="VD: 1900545415">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-admin-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-netflix-red">Thêm mới</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editTheatreModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Cập nhật rạp</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="edit">
-                    <input type="hidden" name="id" id="edit_theatre_id">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Tên rạp <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="name" id="edit_theatre_name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Số phòng chiếu <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="total_screens" id="edit_theatre_total_screens" min="1" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-control" name="address" id="edit_theatre_address">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Thành phố</label>
-                            <input type="text" class="form-control" name="city" id="edit_theatre_city">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Điện thoại</label>
-                            <input type="text" class="form-control" name="phone" id="edit_theatre_phone">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-admin-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-netflix-red">Lưu thay đổi</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const editModal = new bootstrap.Modal(document.getElementById('editTheatreModal'));
-    document.querySelectorAll('.edit-theatre-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const theatre = JSON.parse(this.getAttribute('data-theatre'));
-            document.getElementById('edit_theatre_id').value = theatre.id;
-            document.getElementById('edit_theatre_name').value = theatre.name || '';
-            document.getElementById('edit_theatre_address').value = theatre.address || '';
-            document.getElementById('edit_theatre_city').value = theatre.city || '';
-            document.getElementById('edit_theatre_phone').value = theatre.phone || '';
-            document.getElementById('edit_theatre_total_screens').value = theatre.total_screens || 1;
-            editModal.show();
-        });
-    });
-});
-</script>
 
 <?php require_once 'admin_footer.php'; ?>
