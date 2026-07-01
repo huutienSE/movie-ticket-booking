@@ -62,4 +62,8 @@ class MovieService {
     public function getNowShowingMovies() {
         return $this->model->getNowShowingMovies();
     }
+
+    public function getUpcomingMovies() {
+        return $this->model->getUpcomingMovies();
+    }
 }

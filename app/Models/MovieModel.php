@@ -105,6 +105,18 @@ class MovieModel {
         return $movies;
     }
 
+    public function getUpcomingMovies() {
+        $query = "SELECT * FROM movies WHERE status = 'coming' ORDER BY id DESC";
+        $result = mysqli_query($this->conn, $query);
+        $movies = [];
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $movies[] = $row;
+            }
+        }
+        return $movies;
+    }
+
     public function getTotalMovies() {
         $result = mysqli_query($this->conn, "SELECT COUNT(*) as count FROM movies");
         if ($result) {
