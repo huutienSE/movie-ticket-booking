@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../layouts/header.php';
 
-// 1. KẾT NỐI DATABASE BẰNG PDO
+// 1. Káº¾T Ná»I DATABASE Báº°NG PDO
 $host = '127.0.0.1';
 $port = '3308';
 $dbname = 'movie_ticket_booking';
@@ -9,16 +9,16 @@ $username = 'root';
 $password = '123456'; 
 
 try {
-    // Thêm tham số port vào đây
+    // ThÃªm tham sá»‘ port vÃ o Ä‘Ã¢y
     $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Lỗi kết nối CSDL: " . $e->getMessage());
+    die("Lá»—i káº¿t ná»‘i CSDL: " . $e->getMessage());
 }
-// 2. TRUY VẤN LẤY PHIM ĐANG CHIẾU VÀ THỂ LOẠI
+// 2. TRUY Váº¤N Láº¤Y PHIM ÄANG CHIáº¾U VÃ€ THá»‚ LOáº I
 $sql = "
     SELECT m.id, m.title, m.age_restriction, m.duration, m.country, 
-           mi.image_url as poster, -- Lấy ảnh từ bảng movie_images
+           mi.image_url as poster, -- Láº¥y áº£nh tá»« báº£ng movie_images
            GROUP_CONCAT(g.name SEPARATOR ', ') as genres
     FROM movies m
     LEFT JOIN movie_images mi ON m.id = mi.movie_id
@@ -31,7 +31,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 3. TRUY VẤN LẤY PHIM SẮP CHIẾU
+// 3. TRUY Váº¤N Láº¤Y PHIM Sáº®P CHIáº¾U
 $sqlComing = "
     SELECT m.id, m.title, m.age_restriction, m.duration, m.country, 
            mi.image_url as poster,
@@ -47,9 +47,9 @@ $stmtComing = $pdo->prepare($sqlComing);
 $stmtComing->execute();
 $moviesComing = $stmtComing->fetchAll(PDO::FETCH_ASSOC);
 
-// Hàm nhỏ để format nhãn độ tuổi
+// HÃ m nhá» Ä‘á»ƒ format nhÃ£n Ä‘á»™ tuá»•i
 function formatAgeRating($age) {
-    if ($age == 0) return ['label' => 'P', 'class' => 'age-p', 'color' => '#22c55e']; // Xanh lá
+    if ($age == 0) return ['label' => 'P', 'class' => 'age-p', 'color' => '#22c55e']; // Xanh lÃ¡
     return ['label' => 'T' . $age, 'class' => 'age-t' . $age, 'color' => ($age >= 18 ? '#ef4444' : '#eab308')];
 }
 ?>
@@ -58,16 +58,16 @@ function formatAgeRating($age) {
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <img src="/MOVIE-TICKET-BOOKING/public/assets/img/tonghop-banner.jpg" alt="Banner 1">
+                <img src="/movie-ticket-booking/images/tonghop-banner.jpg" alt="Banner 1">
             </div>
             <div class="swiper-slide">
-                <img src="/MOVIE-TICKET-BOOKING/public/assets/img/minions&quaivat-banner.jpg" alt="Banner 2">
+                <img src="/movie-ticket-booking/images/minions&quaivat-banner.jpg" alt="Banner 2">
             </div>
             <div class="swiper-slide">
-                <img src="/MOVIE-TICKET-BOOKING/public/assets/img/supergirl-banner.png" alt="Banner 3">
+                <img src="/movie-ticket-booking/images/supergirl-banner.png" alt="Banner 3">
             </div>
             <div class="swiper-slide">
-                <img src="/MOVIE-TICKET-BOOKING/public/assets/img/muave-banner.png" alt="Banner 4">
+                <img src="/movie-ticket-booking/images/muave-banner.png" alt="Banner 4">
             </div>
         </div>
         <div class="swiper-button-next"></div>
@@ -77,7 +77,7 @@ function formatAgeRating($age) {
 </div>
 
 <div class="container movie-list-section">
-    <h1 class="section-title">PHIM ĐANG CHIẾU</h1>
+    <h1 class="section-title">PHIM ÄANG CHIáº¾U</h1>
     
     <div class="swiper movieSwiper">
         <div class="swiper-wrapper">
@@ -100,15 +100,15 @@ function formatAgeRating($age) {
                             <h4><?= htmlspecialchars($movie['title']) ?></h4>
                             <ul>
                                 <li>
-                                    <img src="/MOVIE-TICKET-BOOKING/public/assets/svg/tag.svg" alt="Genre" class="info-icon"> 
-                                    <?= htmlspecialchars($movie['genres'] ?? 'Đang cập nhật') ?>
+                                    <img src="/movie-ticket-booking/images/svg/tag.svg" alt="Genre" class="info-icon"> 
+                                    <?= htmlspecialchars($movie['genres'] ?? 'Äang cáº­p nháº­t') ?>
                                 </li>
                                 <li>
-                                    <img src="/MOVIE-TICKET-BOOKING/public/assets/svg/time.svg" alt="Clock" class="info-icon"> 
+                                    <img src="/movie-ticket-booking/images/svg/time.svg" alt="Clock" class="info-icon"> 
                                     <?= htmlspecialchars($movie['duration']) ?>'
                                 </li>
                                 <li>
-                                    <img src="/MOVIE-TICKET-BOOKING/public/assets/svg/world.svg" alt="Globe" class="info-icon"> 
+                                    <img src="/movie-ticket-booking/images/svg/world.svg" alt="Globe" class="info-icon"> 
                                     <?= htmlspecialchars($movie['country']) ?>
                                 </li>
                             </ul>
@@ -118,7 +118,7 @@ function formatAgeRating($age) {
                     <h3 class="movie-title"><?= htmlspecialchars($movie['title']) ?></h3>
 
                     <div class="movie-actions">
-                        <a href="#" class="btn-book">ĐẶT VÉ</a>
+                        <a href="#" class="btn-book">Äáº¶T VÃ‰</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -130,7 +130,7 @@ function formatAgeRating($age) {
 </div>
 
 <div class="container movie-list-section">
-    <h1 class="section-title">PHIM SẮP CHIẾU</h1>
+    <h1 class="section-title">PHIM Sáº®P CHIáº¾U</h1>
     
     <div class="swiper comingMovieSwiper">
         <div class="swiper-wrapper">
@@ -153,15 +153,15 @@ function formatAgeRating($age) {
                             <h4><?= htmlspecialchars($movie['title']) ?></h4>
                             <ul>
                                 <li>
-                                    <img src="/MOVIE-TICKET-BOOKING/public/assets/svg/tag.svg" alt="Genre" class="info-icon"> 
-                                    <?= htmlspecialchars($movie['genres'] ?? 'Đang cập nhật') ?>
+                                    <img src="/movie-ticket-booking/images/svg/tag.svg" alt="Genre" class="info-icon"> 
+                                    <?= htmlspecialchars($movie['genres'] ?? 'Äang cáº­p nháº­t') ?>
                                 </li>
                                 <li>
-                                    <img src="/MOVIE-TICKET-BOOKING/public/assets/svg/time.svg" alt="Clock" class="info-icon"> 
+                                    <img src="/movie-ticket-booking/images/svg/time.svg" alt="Clock" class="info-icon"> 
                                     <?= htmlspecialchars($movie['duration']) ?>'
                                 </li>
                                 <li>
-                                    <img src="/MOVIE-TICKET-BOOKING/public/assets/svg/world.svg" alt="Globe" class="info-icon"> 
+                                    <img src="/movie-ticket-booking/images/svg/world.svg" alt="Globe" class="info-icon"> 
                                     <?= htmlspecialchars($movie['country']) ?>
                                 </li>
                             </ul>
@@ -171,7 +171,7 @@ function formatAgeRating($age) {
                     <h3 class="movie-title"><?= htmlspecialchars($movie['title']) ?></h3>
 
                     <div class="movie-actions">
-                        <a href="#" class="btn-book">TÌM HIỂU THÊM</a>
+                        <a href="#" class="btn-book">TÃŒM HIá»‚U THÃŠM</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -184,7 +184,7 @@ function formatAgeRating($age) {
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 <script>
-    // Swiper cho Banner Quảng Cáo
+    // Swiper cho Banner Quáº£ng CÃ¡o
     var bannerSwiper = new Swiper(".mySwiper", {
         spaceBetween: 0,
         centeredSlides: true,
@@ -203,7 +203,7 @@ function formatAgeRating($age) {
         },
     });
 
-    // Swiper cho Danh Sách Phim Đang Chiếu
+    // Swiper cho Danh SÃ¡ch Phim Äang Chiáº¿u
     var movieSwiper = new Swiper(".movieSwiper", {
         slidesPerView: 4, 
         spaceBetween: 30, 
@@ -220,7 +220,7 @@ function formatAgeRating($age) {
         }
     });
 
-    // Swiper cho Danh Sách Phim Sắp Chiếu
+    // Swiper cho Danh SÃ¡ch Phim Sáº¯p Chiáº¿u
     var comingMovieSwiper = new Swiper(".comingMovieSwiper", {
         slidesPerView: 4, 
         spaceBetween: 30, 

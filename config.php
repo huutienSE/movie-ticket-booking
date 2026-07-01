@@ -30,4 +30,9 @@ require_once __DIR__ . '/app/init.php';
 
 // Sử dụng lớp Database chung cho toàn bộ dự án để đồng bộ kết nối
 $conn = App\Config\Database::getConnection();
+// Hàm nhỏ để format nhãn độ tuổi
+function formatAgeRating($age) {
+    if ($age == 0) return ['label' => 'P', 'class' => 'age-p', 'color' => '#22c55e']; // Xanh lá
+    return ['label' => 'T' . $age, 'class' => 'age-t' . $age, 'color' => ($age >= 18 ? '#ef4444' : '#eab308')];
+}
 ?>

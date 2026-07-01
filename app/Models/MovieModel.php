@@ -94,7 +94,40 @@ class MovieModel {
     }
 
     public function getNowShowingMovies() {
-        $query = "SELECT * FROM movies WHERE status = 'now_showing' ORDER BY id DESC";
+        $query = "
+            SELECT m.*, 
+                   mi.image_url as poster,
+                   GROUP_CONCAT(g.name SEPARATOR ', ') as genres
+            FROM movies m
+            LEFT JOIN movie_images mi ON m.id = mi.movie_id
+            LEFT JOIN movie_genre mg ON m.id = mg.movie_id
+            LEFT JOIN genres g ON mg.genre_id = g.id
+            WHERE m.status = 'now_showing'
+            GROUP BY m.id
+            ORDER BY m.id DESC
+        ";
+        $result = mysqli_query($this->conn, $query);
+        $movies = [];
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $movies[] = $row;
+            }
+        }
+        return $movies;
+    }
+    public function getComingSoonMovies() {
+        $query = "
+            SELECT m.*, 
+                   mi.image_url as poster,
+                   GROUP_CONCAT(g.name SEPARATOR ', ') as genres
+            FROM movies m
+            LEFT JOIN movie_images mi ON m.id = mi.movie_id
+            LEFT JOIN movie_genre mg ON m.id = mg.movie_id
+            LEFT JOIN genres g ON mg.genre_id = g.id
+            WHERE m.status = 'coming'
+            GROUP BY m.id
+            ORDER BY m.id DESC
+        ";
         $result = mysqli_query($this->conn, $query);
         $movies = [];
         if ($result) {

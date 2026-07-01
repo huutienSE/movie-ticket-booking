@@ -8,10 +8,11 @@ class Database {
         if (self::$connection === null) {
             $host = 'localhost';
             $username = 'root';
-            $password = '';
+            $password = '123456';
             $database = 'movie_ticket_booking';
+            $port = '3308';
 
-            $conn = mysqli_connect($host, $username, $password, $database);
+            $conn = mysqli_connect($host, $username, $password, $database, $port);
             if (!$conn) {
                 die("Connection failed: " . mysqli_connect_error());
             }

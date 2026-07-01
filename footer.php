@@ -1,6 +1,4 @@
-    </main> 
-    
-    <footer class="main-footer">
+</main> <footer class="main-footer">
         <div class="container">
             <div class="footer-top">
                 <div class="footer-col">
@@ -20,22 +18,7 @@
                     </ul>
                 </div>
 
-<<<<<<< HEAD:app/views/layouts/footer.php
-=======
-                <div class="footer-col">
-                    <h3>HỆ THỐNG RẠP</h3>
-                    <ul>
-                        <li><a href="schedule.php">Tất Cả Hệ Thống Rạp</a></li>
-                        <li><a href="schedule.php?theater_id=1">Cinema Quốc Thanh (TP.HCM)</a></li>
-                        <li><a href="schedule.php?theater_id=2">Cinema Sinh Viên (TP.HCM)</a></li>
-                        <li><a href="schedule.php?theater_id=3">Cinema Đà Lạt (Lâm Đồng)</a></li>
-                        <li><a href="schedule.php?theater_id=4">Cinema Lâm Đồng (Đức Trọng)</a></li>
-                    </ul>
-                </div>
-
->>>>>>> 6c24f3f938f832157a70d79178badaa365541504:footer.php
                 <div class="footer-col footer-col-right">
-                    <!-- Cập nhật đường dẫn ảnh -->
                     <img src="images/logo.png" alt="Logo" class="footer-logo-main">
                     <div class="social-icons">
                         <a href="#"><img src="images/svg/footer-facebook.svg" alt="Facebook"></a>
@@ -64,8 +47,5 @@
             </div>
         </div>
     </footer>
-    
-    <!-- Bạn có thể tạo file js/main.js sau này để viết JavaScript tuỳ chỉnh -->
-    <!-- <script src="js/main.js"></script> -->
 </body>
 </html>

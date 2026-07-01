@@ -1,4 +1,4 @@
-<!-- http://localhost/MOVIE-TICKET-BOOKING/app/views/layouts/header.php -->
+﻿<!-- http://localhost/movie-ticket-booking/app/views/layouts/header.php -->
 
 
 
@@ -17,12 +17,12 @@
 /d -->
 
 <?php
-// Mô phỏng session
+// MÃ´ phá»ng session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Giả lập dữ liệu mảng Rạp phim nếu biến $theaters chưa được Controller truyền vào
+// Giáº£ láº­p dá»¯ liá»‡u máº£ng Ráº¡p phim náº¿u biáº¿n $theaters chÆ°a Ä‘Æ°á»£c Controller truyá»n vÃ o
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -35,25 +35,25 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     
-    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/global.css">
-    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/header.css">
-    <link rel="stylesheet" href="/movie-ticket-booking/public/assets/css/footer.css"> 
-    <link rel="stylesheet" href="/MOVIE-TICKET-BOOKING/public/assets/css/home.css">
-    <link rel="stylesheet" href="/MOVIE-TICKET-BOOKING/public/assets/css/movies.css">
+    <link rel="stylesheet" href="/movie-ticket-booking/css/global.css">
+    <link rel="stylesheet" href="/movie-ticket-booking/css/header.css">
+    <link rel="stylesheet" href="/movie-ticket-booking/css/footer.css"> 
+    <link rel="stylesheet" href="/movie-ticket-booking/css/home.css">
+    <link rel="stylesheet" href="/movie-ticket-booking/css/movies.css">
 </head>
 <body>
     <header class="main-header">
         <div class="container">
         <div class="header-top">
             <div class="logo">
-                <a href="/"><img src="/movie-ticket-booking/public/assets/img/logo.png" alt="Logo"></a>
+                <a href="/"><img src="/movie-ticket-booking/images/logo.png" alt="Logo"></a>
             </div>
             
             <div class="header-top-right">
     <form class="search-box" action="/search" method="GET">
-        <input type="text" name="keyword" placeholder="Tìm phim...">
+        <input type="text" name="keyword" placeholder="TÃ¬m phim...">
         <button type="submit" class="search-btn">
-            <img src="/movie-ticket-booking/public/assets/svg/search1.svg" alt="Search" class="search-icon">
+            <img src="/movie-ticket-booking/images/svg/search1.svg" alt="Search" class="search-icon">
         </button>
     </form>
 
@@ -61,13 +61,13 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php if (isset($_SESSION['user'])): ?>
             <div class="user-profile">
                 <span>Hi, <?php echo htmlspecialchars($_SESSION['user']['name']); ?></span>
-                <a href="/settings" title="Cài đặt tài khoản">
-                    <img src="/movie-ticket-booking/public/assets/svg/setting.svg" alt="Settings" class="setting-icon">
+                <a href="/settings" title="CÃ i Ä‘áº·t tÃ i khoáº£n">
+                    <img src="/movie-ticket-booking/images/svg/setting.svg" alt="Settings" class="setting-icon">
                 </a>
             </div>
         <?php else: ?>
             <a href="/login" class="login-btn">
-            Đăng nhập
+            ÄÄƒng nháº­p
             </a>
         <?php endif; ?>
     </div>
@@ -76,7 +76,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <nav class="header-bottom">
             <a href="/movies" class="nav-item">Phim</a>
-            <a href="/huong-dan-dat-ve" class="nav-item">Hướng dẫn đặt vé</a>
+            <a href="/huong-dan-dat-ve" class="nav-item">HÆ°á»›ng dáº«n Ä‘áº·t vÃ©</a>
         </nav>
         </div>
     </header>
