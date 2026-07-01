@@ -129,6 +129,7 @@ $reviews = $reviewController->getReviewsByMovie($movieId);
 require_once 'footer.php';
 ?>
 
+// code o tren  
 
 <?php
 // movie_details.php - Trang chi tiết phim
