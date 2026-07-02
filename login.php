@@ -6,8 +6,12 @@ use App\Controllers\AuthController;
 $authController = new AuthController();
 $authController->handleLogin();
 
-if (isset($_SESSION['user'])) {
-    header("Location: index.php");
+if (isset($_SESSION['user']) && is_array($_SESSION['user'])) {
+    if (($_SESSION['user']['role'] ?? '') === 'admin') {
+        header("Location: admin/index.php");
+    } else {
+        header("Location: index.php");
+    }
     exit;
 }
 
