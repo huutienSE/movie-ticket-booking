@@ -10,18 +10,13 @@ class AuthController
 
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $this->authService = new AuthService();
     }
 
     public function handleLogin()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: login.php");
-            exit;
+            return;
         }
 
         $email = trim($_POST['email'] ?? '');
@@ -53,10 +48,10 @@ class AuthController
             'first_name' => trim($_POST['first_name'] ?? ''),
             'last_name' => trim($_POST['last_name'] ?? ''),
             'email' => trim($_POST['email'] ?? ''),
-            'password' => $_POST['password'] ?? '',
-            'confirm_password' => $_POST['confirm_password'] ?? '',
             'phone' => trim($_POST['phone'] ?? ''),
-            'birth_date' => $_POST['birth_date'] ?? null
+            'birth_date' => trim($_POST['birth_date'] ?? ''),
+            'password' => $_POST['password'] ?? '',
+            'confirm_password' => $_POST['confirm_password'] ?? ''
         ];
 
         $result = $this->authService->register($data);
