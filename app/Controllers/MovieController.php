@@ -63,4 +63,7 @@ class MovieController {
     public function getAllGenres() {
         return $this->genreService->getAllGenres();
     }
+    public function getComingSoonMovies() {
+        return $this->movieService->getComingSoonMovies();
+    }
 }

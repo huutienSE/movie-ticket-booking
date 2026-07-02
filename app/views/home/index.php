@@ -1,36 +1,73 @@
-<?php
-/**
- * KIẾN THỨC PHP: Gộp giao diện và Truy vấn CSDL
- * 
- * Ở đây ta gọi `header.php`. Bởi vì trong `header.php` đã có `require_once 'config.php'`, 
- * nên ở trang index này ta có thể dùng biến $conn (kết nối CSDL) mà không cần gọi lại config.php
- */
-require_once 'header.php';
+﻿<?php
+require_once __DIR__ . '/../layouts/header.php';
 
-// require_once 'header.php';
+// 1. Káº¾T Ná»I DATABASE Báº°NG PDO
+$host = '127.0.0.1';
+$port = '3308';
+$dbname = 'movie_ticket_booking';
+$username = 'root';
+$password = '123456'; 
 
-use App\Controllers\MovieController;
+try {
+    // ThÃªm tham sá»‘ port vÃ o Ä‘Ã¢y
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Lá»—i káº¿t ná»‘i CSDL: " . $e->getMessage());
+}
+// 2. TRUY Váº¤N Láº¤Y PHIM ÄANG CHIáº¾U VÃ€ THá»‚ LOáº I
+$sql = "
+    SELECT m.id, m.title, m.age_restriction, m.duration, m.country, 
+           mi.image_url as poster, -- Láº¥y áº£nh tá»« báº£ng movie_images
+           GROUP_CONCAT(g.name SEPARATOR ', ') as genres
+    FROM movies m
+    LEFT JOIN movie_images mi ON m.id = mi.movie_id
+    LEFT JOIN movie_genre mg ON m.id = mg.movie_id
+    LEFT JOIN genres g ON mg.genre_id = g.id
+    WHERE m.status = 'now_showing' AND m.is_active = 1
+    GROUP BY m.id
+";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$movieController = new MovieController();
-$movies = $movieController->getNowShowingMovies();
-$moviesComing = $movieController->getComingSoonMovies();
+// 3. TRUY Váº¤N Láº¤Y PHIM Sáº®P CHIáº¾U
+$sqlComing = "
+    SELECT m.id, m.title, m.age_restriction, m.duration, m.country, 
+           mi.image_url as poster,
+           GROUP_CONCAT(g.name SEPARATOR ', ') as genres
+    FROM movies m
+    LEFT JOIN movie_images mi ON m.id = mi.movie_id
+    LEFT JOIN movie_genre mg ON m.id = mg.movie_id
+    LEFT JOIN genres g ON mg.genre_id = g.id
+    WHERE m.status = 'coming' AND m.is_active = 1
+    GROUP BY m.id
+";
+$stmtComing = $pdo->prepare($sqlComing);
+$stmtComing->execute();
+$moviesComing = $stmtComing->fetchAll(PDO::FETCH_ASSOC);
+
+// HÃ m nhá» Ä‘á»ƒ format nhÃ£n Ä‘á»™ tuá»•i
+function formatAgeRating($age) {
+    if ($age == 0) return ['label' => 'P', 'class' => 'age-p', 'color' => '#22c55e']; // Xanh lÃ¡
+    return ['label' => 'T' . $age, 'class' => 'age-t' . $age, 'color' => ($age >= 18 ? '#ef4444' : '#eab308')];
+}
 ?>
 
-<!-- BANNER -->
 <div class="banner-section">
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <img src="images/tonghop-banner.jpg" alt="Banner 1">
+                <img src="/movie-ticket-booking/images/tonghop-banner.jpg" alt="Banner 1">
             </div>
             <div class="swiper-slide">
-                <img src="images/minions&quaivat-banner.jpg" alt="Banner 2">
+                <img src="/movie-ticket-booking/images/minions&quaivat-banner.jpg" alt="Banner 2">
             </div>
             <div class="swiper-slide">
-                <img src="images/supergirl-banner.png" alt="Banner 3">
+                <img src="/movie-ticket-booking/images/supergirl-banner.png" alt="Banner 3">
             </div>
             <div class="swiper-slide">
-                <img src="images/muave-banner.png" alt="Banner 4">
+                <img src="/movie-ticket-booking/images/muave-banner.png" alt="Banner 4">
             </div>
         </div>
         <div class="swiper-button-next"></div>
@@ -40,23 +77,14 @@ $moviesComing = $movieController->getComingSoonMovies();
 </div>
 
 <div class="container movie-list-section">
-    <h1 class="section-title">PHIM ĐANG CHIẾU</h1>
+    <h1 class="section-title">PHIM ÄANG CHIáº¾U</h1>
     
     <div class="swiper movieSwiper">
         <div class="swiper-wrapper">
             <?php foreach ($movies as $movie): ?>
                 <?php 
                     $ageData = formatAgeRating($movie['age_restriction']); 
-                    $posterUrl = !empty($movie['poster']) ? $movie['poster'] : '';
-                    if ($posterUrl) {
-                        if (strpos($posterUrl, 'http') === 0) {
-                            // Full URL, keep it
-                        } else {
-                            $posterUrl = 'images/movies/' . basename($posterUrl);
-                        }
-                    } else {
-                        $posterUrl = 'https://via.placeholder.com/300x450?text=No+Image';
-                    }
+                    $posterUrl = !empty($movie['poster']) ? $movie['poster'] : 'https://via.placeholder.com/300x450?text=No+Image';
                 ?>
                 <div class="swiper-slide movie-card">
                     <div class="movie-poster-box">
@@ -73,7 +101,7 @@ $moviesComing = $movieController->getComingSoonMovies();
                             <ul>
                                 <li>
                                     <img src="/movie-ticket-booking/images/svg/tag.svg" alt="Genre" class="info-icon"> 
-                                    <?= htmlspecialchars($movie['genres'] ?? 'Đang cập nhật') ?>
+                                    <?= htmlspecialchars($movie['genres'] ?? 'Äang cáº­p nháº­t') ?>
                                 </li>
                                 <li>
                                     <img src="/movie-ticket-booking/images/svg/time.svg" alt="Clock" class="info-icon"> 
@@ -90,7 +118,7 @@ $moviesComing = $movieController->getComingSoonMovies();
                     <h3 class="movie-title"><?= htmlspecialchars($movie['title']) ?></h3>
 
                     <div class="movie-actions">
-                        <a href="#" class="btn-book">ĐẶT VÉ</a>
+                        <a href="#" class="btn-book">Äáº¶T VÃ‰</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -102,23 +130,14 @@ $moviesComing = $movieController->getComingSoonMovies();
 </div>
 
 <div class="container movie-list-section">
-    <h1 class="section-title">PHIM SẮP CHIẾU</h1>
+    <h1 class="section-title">PHIM Sáº®P CHIáº¾U</h1>
     
     <div class="swiper comingMovieSwiper">
         <div class="swiper-wrapper">
             <?php foreach ($moviesComing as $movie): ?>
                 <?php 
                     $ageData = formatAgeRating($movie['age_restriction']); 
-                    $posterUrl = !empty($movie['poster']) ? $movie['poster'] : '';
-                    if ($posterUrl) {
-                        if (strpos($posterUrl, 'http') === 0) {
-                            // Full URL, keep it
-                        } else {
-                            $posterUrl = 'images/movies/' . basename($posterUrl);
-                        }
-                    } else {
-                        $posterUrl = 'https://via.placeholder.com/300x450?text=No+Image';
-                    }
+                    $posterUrl = !empty($movie['poster']) ? $movie['poster'] : 'https://via.placeholder.com/300x450?text=No+Image';
                 ?>
                 <div class="swiper-slide movie-card">
                     <div class="movie-poster-box">
@@ -135,7 +154,7 @@ $moviesComing = $movieController->getComingSoonMovies();
                             <ul>
                                 <li>
                                     <img src="/movie-ticket-booking/images/svg/tag.svg" alt="Genre" class="info-icon"> 
-                                    <?= htmlspecialchars($movie['genres'] ?? 'Đang cập nhật') ?>
+                                    <?= htmlspecialchars($movie['genres'] ?? 'Äang cáº­p nháº­t') ?>
                                 </li>
                                 <li>
                                     <img src="/movie-ticket-booking/images/svg/time.svg" alt="Clock" class="info-icon"> 
@@ -152,7 +171,7 @@ $moviesComing = $movieController->getComingSoonMovies();
                     <h3 class="movie-title"><?= htmlspecialchars($movie['title']) ?></h3>
 
                     <div class="movie-actions">
-                        <a href="#" class="btn-book">TÌM HIỂU THÊM</a>
+                        <a href="#" class="btn-book">TÃŒM HIá»‚U THÃŠM</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -165,7 +184,7 @@ $moviesComing = $movieController->getComingSoonMovies();
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 <script>
-    // Swiper cho Banner Quảng Cáo
+    // Swiper cho Banner Quáº£ng CÃ¡o
     var bannerSwiper = new Swiper(".mySwiper", {
         spaceBetween: 0,
         centeredSlides: true,
@@ -184,7 +203,7 @@ $moviesComing = $movieController->getComingSoonMovies();
         },
     });
 
-    // Swiper cho Danh Sách Phim Đang Chiếu
+    // Swiper cho Danh SÃ¡ch Phim Äang Chiáº¿u
     var movieSwiper = new Swiper(".movieSwiper", {
         slidesPerView: 4, 
         spaceBetween: 30, 
@@ -201,7 +220,7 @@ $moviesComing = $movieController->getComingSoonMovies();
         }
     });
 
-    // Swiper cho Danh Sách Phim Sắp Chiếu
+    // Swiper cho Danh SÃ¡ch Phim Sáº¯p Chiáº¿u
     var comingMovieSwiper = new Swiper(".comingMovieSwiper", {
         slidesPerView: 4, 
         spaceBetween: 30, 
@@ -219,5 +238,4 @@ $moviesComing = $movieController->getComingSoonMovies();
     });
 </script>
 
-<?php require_once 'footer.php'; ?>
-
+<?php require_once __DIR__ . '/../layouts/footer.php'; ?>
