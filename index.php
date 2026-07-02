@@ -5,8 +5,7 @@
  * Ở đây ta gọi `header.php`. Bởi vì trong `header.php` đã có `require_once 'config.php'`, 
  * nên ở trang index này ta có thể dùng biến $conn (kết nối CSDL) mà không cần gọi lại config.php
  */
-require_once 'header.php';
-
+$pageCSS = ['css/home.css'];
 require_once 'header.php';
 
 use App\Controllers\MovieController;

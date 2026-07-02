@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Services\AuthService;
+use App\Services\UserService;
 
 class AuthController {
     private $authService;
@@ -51,7 +52,33 @@ class AuthController {
 
     public function handleRegister() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // TODO: Xử lý request Đăng ký và gọi AuthService->register()
+            $data = [
+                'first_name' => trim($_POST['first_name'] ?? ''),
+                'last_name'  => trim($_POST['last_name']  ?? ''),
+                'email'      => trim($_POST['email']      ?? ''),
+                'phone'      => trim($_POST['phone']      ?? ''),
+                'password'   => $_POST['password']        ?? '',
+                'role'       => 'user',
+            ];
+
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+            if ($data['password'] !== $confirmPassword) {
+                $_SESSION['error_msg'] = 'Mật khẩu nhập lại không khớp!';
+                header('Location: registration.php');
+                exit;
+            }
+
+            $userService = new UserService();
+            $result = $userService->addUser($data);
+
+            if ($result['status'] === 'success') {
+                $_SESSION['success_msg'] = 'Đăng ký thành công! Vui lòng đăng nhập.';
+                header('Location: login.php');
+            } else {
+                $_SESSION['error_msg'] = $result['message'];
+                header('Location: registration.php');
+            }
+            exit;
         }
     }
 }

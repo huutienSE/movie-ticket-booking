@@ -37,11 +37,14 @@ $displayName = $isLoggedIn ? ($sessionUser['first_name'] ?? $sessionUser['email'
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     
-    <!-- Cập nhật đường dẫn CSS về cấu trúc mới (không còn public/assets) -->
+    <!-- CSS lõi dùng chung mọi trang -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/footer.css"> 
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- CSS riêng cho từng trang: khai báo $pageCSS trước khi include header -->
+    <?php if (!empty($pageCSS)): foreach ((array)$pageCSS as $css): ?>
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($css); ?>">
+    <?php endforeach; endif; ?>
 </head>
 <body>
     <header class="main-header">
